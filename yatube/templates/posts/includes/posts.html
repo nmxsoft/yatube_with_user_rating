@@ -1,0 +1,37 @@
+{% for post in page_obj %}
+  <ul>
+    <li>
+      Автор:
+      <a href="{% url 'posts:profile' post.author %}">
+        {{ post.author.get_full_name }}
+      </a>
+    </li>
+    <li>
+      {% for r in rating %}
+      {% if r.author == post.author %}
+      Рейтинг автора: {{ r.rat }}
+      {% endif %}
+      {% endfor %}
+    </li>
+    <li>
+      Дата публикации: {{ post.pub_date|date:"d E Y" }}
+    </li>
+    <li>
+      Группа: {{ post.group.slug }}
+    </li>
+  </ul>
+    {% include 'posts/includes/image_thumbnail.html' %}
+  <p>{{ post.text }}</p>
+  <p>
+    <a href="{% url 'posts:post_detail' post.id %}">
+      подробная информация
+    </a>
+  </p>
+  {% if post.group.slug %}
+    <a href="{% url 'posts:group_slug' post.group.slug %}">
+      все записи группы
+    </a>
+  {% endif %}
+
+  {% if not forloop.last %}<hr>{% endif %}
+{% endfor %}
